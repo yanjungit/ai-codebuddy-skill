@@ -1,0 +1,137 @@
+# h6-openapi2 字段验证规则定义文件
+# 用于根据 API 对象字段自动生成 ServiceImpl 中的验证代码
+
+version: "1.0"
+
+# 单头字段验证规则定义
+# 字段名称 -> 表名.列名
+header_fields:
+  orgCode:
+    table: Store
+    column: Code
+    description: 组织代码
+    require_org_match: false
+
+  storeCode:
+    table: Store
+    column: Code
+    description: 门店代码
+    require_org_match: true
+    org_match_field: orgCode
+
+  vendorCode:
+    table: Vendor
+    column: Code
+    description: 供应商代码
+    require_org_match: true
+    org_match_field: orgCode
+
+  wrhCode:
+    table: WareHouse
+    column: Code
+    description: 仓位代码
+    require_org_match: true
+    org_match_field: orgCode
+
+  senderCode:
+    table: Store
+    column: Code
+    description: 出库单位代码
+    require_org_match: false
+
+  receiverCode:
+    table: Store
+    column: Code
+    description: 收货单位代码
+    require_org_match: false
+
+  purOrgCode:
+    table: Store
+    column: Code
+    description: 采购组织代码
+    require_org_match: false
+
+  saleOrgCode:
+    table: Store
+    column: Code
+    description: 销售组织代码
+    require_org_match: false
+
+  userOrgCode:
+    table: Bpm_Org
+    column: Code
+    description: OA组织代码
+    require_org_match: false
+
+# 明细字段验证规则定义
+detail_fields:
+  goodsCode:
+    table: Goods
+    column: Code
+    description: 明细商品代码
+    require_org_match: false
+
+  inputCode:
+    table: GdInput
+    column: Code
+    description: 明细商品输入码
+    require_org_match: false
+
+  gdCode:
+    table: Goods
+    column: Code
+    description: 商品代码
+    require_org_match: false
+
+# 表名到中文描述的映射
+table_descriptions:
+  Store: 门店
+  Vendor: 供应商
+  WareHouse: 仓位
+  Goods: 商品
+  GdInput: 商品输入码
+  Bpm_Org: 组织
+
+# 特殊情况处理：字段别名映射
+# 有些字段可能使用不同的名称，但对应相同的验证逻辑
+field_aliases:
+  # 组织代码别名
+  org_code: orgCode
+  org: orgCode
+
+  # 门店代码别名
+  store_code: storeCode
+  store: storeCode
+  clientOrgCode: orgCode
+  purOrgCode: orgCode
+  saleOrgCode: orgCode
+
+  # 供应商代码别名
+  vendor_code: vendorCode
+  vendor: vendorCode
+  supplierCode: vendorCode
+
+  # 仓位代码别名
+  wrh_code: wrhCode
+  warehouseCode: wrhCode
+  whCode: wrhCode
+  bckWrhCode: wrhCode
+
+  # 出库单位别名
+  sender_code: senderCode
+  fromOrgCode: senderCode
+
+  # 收货单位别名
+  receiver_code: receiverCode
+  toOrgCode: receiverCode
+
+# 默认验证配置
+default_config:
+  # 是否在生成代码时包含 TODO 注释
+  include_todo: false
+
+  # 是否自动生成组织匹配验证
+  auto_generate_org_match: true
+
+  # 明细验证的默认前缀
+  detail_prefix: 明细
